@@ -1,0 +1,52 @@
+# Configuration for LoRA Optimization Pipeline
+
+# Model settings
+model:
+  name: "unsloth/Qwen3-0.6B-Base"
+  max_seq_length: 128
+  load_in_4bit: true
+
+# Dataset settings
+dataset:
+  source: "s-nlp/Llama-3.1-8B-Instruct-DBpedia-HighlyKnown"
+  max_examples: 500
+  n_shot: 4
+  n_experiments: 10
+
+# Training settings
+training:
+  batch_size: 8
+  gradient_accumulation_steps: 4
+  epochs: 10
+  warmup_steps: 10
+  weight_decay: 0.01
+  lr_scheduler: "linear"
+  seed: 42
+
+# LoRA settings (for optimization)
+lora:
+  rank_options: [1, 4, 8, 16]
+  learning_rate_options: [1e-5, 3e-5, 5e-5, 5e-4, 1e-3, 3e-3, 1e-2]
+  alpha_options: [0.01, 0.1, 1, 2, 4, 8, 10]
+  dropout: 0.1
+
+# Optimization settings
+optimization:
+  n_trials: 28
+  study_name: "lora_optimization"
+  timeout: null
+
+# Knowledge shift weights
+knowledge_shifts:
+  UK_to_HK: 3
+  UK_to_MK: 2
+  MK_to_HK: 1
+  HK_to_UK: -3
+  HK_to_MK: -1
+  MK_to_UK: -2
+
+# Paths
+paths:
+  output_dir: "./outputs"
+  cache_dir: "./cache"
+  results_dir: "./results"
